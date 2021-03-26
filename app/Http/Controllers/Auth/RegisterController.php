@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Role;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -40,6 +41,11 @@ class RegisterController extends Controller
     {
         $this->middleware('guest');
     }
+    public function showRegistrationForm()
+    {
+        $roles = Role::all();
+        return view('auth.register',compact('roles'));
+    }
 
     /**
      * Get a validator for an incoming registration request.
@@ -65,11 +71,12 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user =  User::create([
             'name' => $data['name'],
             'username' => $data['username'],
-            'role_id' => $data['role_id'],
             'password' => Hash::make($data['password']),
         ]);
+        $user->attachRole('cashier');
+        return $user;
     }
 }
