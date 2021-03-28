@@ -11,7 +11,8 @@ try {
     window.$ = window.jQuery = require('jquery');
     require('bootstrap');
     require('admin-lte');
-    require( 'datatables.net' )( window, $ );
+    require( 'datatables.net-bs4' )( window, $ );
+    require( 'datatables.net-buttons-bs4' )( window, $ );
 } catch (e) {}
 
 /**

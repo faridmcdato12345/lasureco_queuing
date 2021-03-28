@@ -3,19 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     /**
      * Show the application dashboard.
      *
@@ -23,9 +14,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
-    }
-    public function adminDashboard(){
-        return view('admin.dashboard');
+        if(Auth::user()->hasRole('cashier')){
+            return view('user.cashier.index');
+        }elseif(Auth::user()->hasRole('complaint_officer')){
+            return view('user.complaint.index');
+        }elseif(Auth::user()->hasRole('administrator')){
+            return view('admin.dashboard');
+        }
     }
 }

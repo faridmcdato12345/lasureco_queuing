@@ -8,40 +8,42 @@
   <title>QUEUING</title>
   <link href="{{ asset('css/app.css') }}" rel="stylesheet">
   <script src="{{asset('js/app.js')}}"></script>
-  <style>
-    .nav-item {
-      font-size:12px;
-    }
-    @media print
-    {
-      html, body { height: auto; }
-      .dt-print-table,.dt-print-table thead tr:nth-child(1) th,.dt-print-table thead tr:nth-child(2) th {border: 0 none !important;}
-      .dt-print-table img{
-        width:100px;
-        text-align: left !important;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper" id="app">
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-    <ul class="navbar-nav">
+    <ul class="navbar-nav ml-auto">
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#"><i class="fa fa-bars" style="color:
           #D50000"></i></a>
+      </li>
+      <li class="nav-item dropdown">
+        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+            {{ Auth::user()->name }}
+        </a>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{{ route('logout') }}"
+               onclick="event.preventDefault();
+                             document.getElementById('logout-form').submit();">
+                {{ __('Logout') }}
+            </a>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                @csrf
+            </form>
+        </div>
       </li>
     </ul>
   </nav>
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <a href="index3.html" class="brand-link">
-    <span class="brand-text font-weight-light">QUEUING</span>
+    <span class="brand-text font-weight-light">QUEUING Admin Panel</span>
     </a>
     <div class="sidebar">
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <li class="nav-item dashboard">
-            <a href="{{route('admin.dashboard')}}" class="nav-link">
+            <a href="{{route('dashboard')}}" class="nav-link">
               <i class="nav-icon fa fa-tachometer-alt"></i>
               <p>
                 Dashboard
@@ -49,7 +51,7 @@
             </a>
           </li>
           <li class="nav-item dashboard">
-            <a href="{{route('admin.users.index')}}" class="nav-link">
+            <a href="{{route('user.index')}}" class="nav-link">
               <i class="nav-icon fa fa-tachometer-alt"></i>
               <p>
                 Users
@@ -65,30 +67,19 @@
             </a>
           </li>
           <li class="nav-item dashboard">
-            <a href="" class="nav-link">
+            <a href="#" class="nav-link">
               <i class="nav-icon fa fa-tachometer-alt"></i>
               <p>
                 Consumers
               </p>
             </a>
           </li>
-          <li class="nav-item form-group">
-            <a href="{{ route('logout') }}" class="nav-link btn btn-danger text-white text-left" onclick="event.preventDefault();
-            document.getElementById('logout-form').submit();">
-            <i class="nav-icon fa fa-sign-out-alt" ></i>
-                <p>
-                LOGOUT
-                </p>
-            </a>
-          </li>
-        <form id="logout-form" action="{{ route('logout') }}" method="POST">
-            @csrf
-        </form>
         </ul>
       </nav>
       </div>
     </aside>
   <div class="content-wrapper overflow-y-auto">
+    @include('sweetalert::alert')
     @yield('content')
   </div>
   <footer class="main-footer">
@@ -97,11 +88,15 @@
 </div>
 </body>
 <script>
-  $(document).ready(function(){
-      $('#myTable').DataTable({
-          stateSave: true,
-      });
-  })
+$.ajaxSetup({
+  headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+  }
+});
+var url = window.location;
+$('ul.nav-sidebar a').filter(function() {
+    return this.href == url;
+}).addClass('active');
 </script>
-@yield('script')
+@stack('scripts')
 </html>

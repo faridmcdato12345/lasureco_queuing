@@ -6,26 +6,34 @@
             <div class="mb-2">
             </div>
             <div class="card">
+                <div class="card-header">Roles</div>
                 <div class="card-body">
-                    <table id="myTable" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
+                    <table id="datatable" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                         <thead>
                             <tr>
-                                <th>Role</th>
+                                <th>Name</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($roles as $role)
-                                <tr>
-                                    <input type="hidden" value="{{$role->id}}" id="user_id">
-                                    <td>{{$role->name}}</td>
-                                </tr>
-                            @endforeach
                         </tbody>
                     </table>
                 </div>
-                
             </div>
         </div>
     </div>
 </div>
 @endsection
+@push('scripts')
+<script>
+    $(document).ready(function(){
+        var table = $('#datatable').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": "{{route('api.roles.index')}}",
+            "columns": [
+                { data: "display_name", name: "roles.display_name"}
+            ]
+        });
+    })
+</script>
+@endpush
