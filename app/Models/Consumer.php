@@ -16,6 +16,8 @@ class Consumer extends Model
         'address',
         'gender',
         'age',
-        'dob'
+        'dob',
+        'email',
+        'age'
     ];
 }

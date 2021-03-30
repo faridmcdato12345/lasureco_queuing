@@ -18,10 +18,12 @@ class CreateConsumersTable extends Migration
             $table->string('firstname')->nullable();
             $table->string('middlename')->nullable();
             $table->string('lastname')->nullable();
-            $table->string('address');
-            $table->string('gender');
-            $table->integer('age');
-            $table->date('dob');
+            $table->string('address')->nullable();
+            $table->string('gender')->nullable();
+            $table->integer('age')->nullable();
+            $table->date('dob')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('email')->nullable();
             $table->timestamps();
         });
     }

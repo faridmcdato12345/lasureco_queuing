@@ -23,6 +23,7 @@
             {{ Auth::user()->name }}
         </a>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{{ route('user.profile') }}">Profile</a>
             <a class="dropdown-item" href="{{ route('logout') }}"
                onclick="event.preventDefault();
                              document.getElementById('logout-form').submit();">
@@ -67,7 +68,7 @@
             </a>
           </li>
           <li class="nav-item dashboard">
-            <a href="#" class="nav-link">
+            <a href="{{route('admin.consumers.index')}}" class="nav-link">
               <i class="nav-icon fa fa-tachometer-alt"></i>
               <p>
                 Consumers

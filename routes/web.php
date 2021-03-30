@@ -15,16 +15,26 @@ Auth::routes();
 Route::middleware(['auth'])->group(function () {
     //route for admin middleware
     Route::group(['middleware' => ['role:administrator']], function() { 
-        Route::resource('user', UserController::class)->except('show');
-        Route::patch('user/activate/{user}',[\App\Http\Controllers\Admin\UserActivateController::class,'activate'])->name('user.activate');
-        Route::patch('user/deactivate/{user}',[\App\Http\Controllers\Admin\UserDeactivateController::class,'deActivate'])->name('user.deactivate');
-        Route::get('roles',[\App\Http\Controllers\Admin\RoleController::class,'index'])->name('admin.roles.index');
-        Route::get('dashboard',function(){
+        Route::resource('admin/user', UserController::class)->except('show');
+        Route::patch('/admin/user/activate/{user}',[\App\Http\Controllers\Admin\UserActivateController::class,'activate'])->name('user.activate');
+        Route::patch('/admin/user/deactivate/{user}',[\App\Http\Controllers\Admin\UserDeactivateController::class,'deActivate'])->name('user.deactivate');
+        Route::get('admin/roles',[\App\Http\Controllers\Admin\RoleController::class,'index'])->name('admin.roles.index');
+        Route::get('admin/consumers',[\App\Http\Controllers\Admin\ConsumerController::class,'index'])->name('admin.consumers.index');
+        Route::get('admin/dashboard',function(){
             return view('admin.dashboard');
         })->name('dashboard');
+        Route::get('admin/user/profile',function(){
+            return view('admin.users.profile');
+        })->name('user.profile');
     });
     //route for auth middleware only
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 });
-
-
+Route::get('/consumer',function(){
+    return view('consumers.index');
+})->name('consumer.tracking');
+Route::get('/consumer/togo',function(){
+    return view('consumers.process');
+});
+Route::post('/consumer',[App\Http\Controllers\Admin\ConsumerController::class,'store'])->name('consumer.store');
+Route::get('/post/consumer',[App\Http\Controllers\Consumer\CashierConsumerController::class,'store'])->name('cashier.consumer.store');
