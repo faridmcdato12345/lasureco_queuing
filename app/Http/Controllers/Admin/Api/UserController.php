@@ -27,6 +27,6 @@ class UserController extends Controller
         ->editColumn('status', function (User $user){
             return $user->status == 1 ? 'Active' : 'Inactive';
         })
-        ->make(true);   
+        ->make(true);
     }
 }

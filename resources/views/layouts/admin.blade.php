@@ -8,7 +8,6 @@
   <title>QUEUING</title>
   <link href="{{ asset('css/app.css') }}" rel="stylesheet">
   <script src="{{asset('js/app.js')}}"></script>
-  <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper" id="app">
@@ -75,6 +74,7 @@
               </p>
             </a>
           </li>
+          
         </ul>
       </nav>
       </div>

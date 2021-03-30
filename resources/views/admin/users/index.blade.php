@@ -63,7 +63,7 @@ $(document).ready(function(){
         ]
     });
     //activate user
-    activate = function(id){
+    activate => function(id){
         var urlUpdate = "{{route('user.activate',':id')}}";
         urlUpdate = urlUpdate.replace(':id',id);
         $.ajax({

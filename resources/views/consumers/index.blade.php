@@ -174,8 +174,10 @@ button:hover {
     <div class="tab">Address:
         <p><input placeholder="Address..." oninput="this.className = ''" name="address"></p>
     </div>
-    <div class="tab">Birthdate:
+    <div class="tab">Birthdate and Age:
         <p><input type="date" placeholder="dd" oninput="this.className = ''" name="dob"></p>
+        <p>Age:</p>
+        <p><input type="number" placeholder="Age..." oninput="this.className = ''" name="age"></p>
     </div>
   <div style="overflow:auto;" id="buttons">
     <div style="text-align: center;">

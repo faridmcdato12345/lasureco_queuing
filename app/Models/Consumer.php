@@ -18,6 +18,6 @@ class Consumer extends Model
         'age',
         'dob',
         'email',
-        'age'
+        'phone'
     ];
 }
