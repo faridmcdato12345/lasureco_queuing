@@ -7,8 +7,22 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>QUEUING</title>
   <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-  <script src="{{asset('js/app.js')}}"></script>
-  <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
+  <style>
+     .outerDiv{
+        height: 500px;
+        position:relative;
+    }
+    
+    .innerDiv{
+        width: 50%;
+        height: 290px;
+        position:absolute;
+        top: 50%;
+        left:35%;
+        margin-top: -147px;
+        margin-left: -144px;
+    }
+  </style>
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper" id="app">
@@ -40,15 +54,64 @@
         <span class="brand-text font-weight-light">CASHIER Panel</span>
         </a>
         <!--list of queuing numbers-->
-        <div class="sidebar">
+        <div class="sidebar" style="color: white">
+            <p><h5>QUEUING NUMBERS:</h5></p>
+            <cashier-component route="{{route('api.cashier.get')}}"></cashier-component>
         </div>
     </aside>
   <div class="content-wrapper overflow-y-auto">
     <!--- controller of numbers-->
+    <div class="container outerDiv">
+      <div class="card justify-content-center text-center innerDiv">
+        <div class="card-header">
+          <h1><strong>QUEUING NUMBER</strong></h1>
+        </div>
+        <div class="card-body" style="color:red">
+          <h1 style="font-size:3.5rem"><strong></strong></h1>
+        </div>
+        <div class="card-footer">
+          <button type="button" class="btn btn-primary btn-lg form-control next-button" id="nxt-button">NEXT</button>
+        </div>
+      </div>
+    </div>
   </div>
   <footer class="main-footer">
     <strong>Copyright &copy; <?php echo date("Y");?> <a href="#">LASURECO - QUEUING</a>.</strong> All rights reserved.
   </footer>
 </div>
+<script src="{{asset('js/app.js')}}"></script>
+<script>
+  $(document).ready(function(){
+    $.ajaxSetup({
+      headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+    getQueuingNumber()
+  });
+  var getQueuingNumber = function(){
+    $.ajax({
+      url: "{{route('api.cashier.get.one')}}",
+      type: "get",
+      dataType: "json",
+      success: function(data){
+        $('#nxt-button').addClass('next-button').removeClass('start-button')
+        $('.card-body h1 strong').html('CA-' + data.number)
+        $('.next-button').html('NEXT')
+        console.log(data.number)
+      },
+      error: function(e){
+        console.log(e)
+        $('.card-body').html('<h2><strong>No Registered Number</strong></h2>')
+        $('#nxt-button').addClass('start-button').removeClass('next-button')
+        $('.start-button').html('START')
+      }
+    })
+  }
+  $('.start-button').on('click',function(){
+    // getQueuingNumber()
+    console.log("wtf")
+  })
+</script>
 </body>
 </html>

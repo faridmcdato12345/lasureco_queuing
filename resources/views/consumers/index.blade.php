@@ -151,7 +151,7 @@ button:hover {
   margin-top: -1000px;
 }
 </style>
-<body>
+<body id="app">
 <form id="regForm" method="POST" action="{{route('consumer.store')}}">
     @csrf
     <h1>Register:</h1>
