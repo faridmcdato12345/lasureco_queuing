@@ -1,7 +1,7 @@
 <template>
   <div>
       <ul>
-          <li v-for="info in infos">{{info.number}}</li>
+          <li v-for="info in infos">CA-{{info.number}}</li>
       </ul>
   </div>
 </template>
@@ -18,18 +18,6 @@
             infos: null,
         }
     },
-    // mounted() {
-    //     Echo.join('users')
-    //     .here((users) => {
-    //         this.users = users
-    //     })
-    //     .joining((users) => {
-    //         this.users.push(users)
-    //     })
-    //     .leaving((user) => {
-    //         this.users.splice(this.users.indexOf(user))
-    //     })
-    // }
     methods: {
         getCashierQue(){
             axios.get(this.theroute)

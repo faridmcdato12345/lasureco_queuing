@@ -19,10 +19,17 @@ class CashierConsumerController extends Controller
         return response()->json($number,200);
     }
     public function getCashierQue(){
-        return CashierConsumerResource::collection(CashierConsumer::all());
+        return CashierConsumerResource::collection(CashierConsumer::select('id','number','status')->where('status',0)->get());
     }
     public function getCashierQueOne(){
-        $que = CashierConsumer::where('status',0)->first();
+        $que = CashierConsumer::select('id','number')->where('status',0)->first();
         return response()->json($que,200);
+    }
+    public function patchCashier($id){
+        $number = CashierConsumer::findOrFail($id);
+        $number->status = 1;
+        $number->save();
+        event(new CashierQueChanged);
+        return response()->json($number,200);
     }
 }

@@ -15,7 +15,7 @@ class CreateComplaintConsumersTable extends Migration
     {
         Schema::create('complaint_consumers', function (Blueprint $table) {
             $table->id();
-            $table->integer('number');
+            $table->string('number');
             $table->timestamps();
         });
     }

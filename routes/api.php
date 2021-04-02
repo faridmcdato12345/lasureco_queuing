@@ -24,3 +24,8 @@ Route::get('/v1/consumers',[\App\Http\Controllers\Admin\Api\ConsumerController::
 Route::get('/v1/cashier',[App\Http\Controllers\Admin\Api\CashierConsumerController::class,'getCashierQue'])->name('api.cashier.get');
 Route::post('/v1/cashier',[App\Http\Controllers\Admin\Api\CashierConsumerController::class,'store'])->name('api.cashier');
 Route::get('/v1/cashier/one',[App\Http\Controllers\Admin\Api\CashierConsumerController::class,'getCashierQueOne'])->name('api.cashier.get.one');
+Route::get('/v1/cashier/update/{id}',[App\Http\Controllers\Admin\Api\CashierConsumerController::class,'patchCashier'])->name('api.cashier.update.status');
+Route::get('/v1/complaint',[App\Http\Controllers\Admin\Api\ComplaintConsumerController::class,'getComplaintQue'])->name('api.complaint.get');
+Route::post('/v1/complaint',[App\Http\Controllers\Admin\Api\ComplaintConsumerController::class,'store'])->name('api.complaint');
+Route::get('/v1/complaint/one',[App\Http\Controllers\Admin\Api\ComplaintConsumerController::class,'getComplaintQueOne'])->name('api.complaint.get.one');
+Route::get('/v1/complaint/update/{id}',[App\Http\Controllers\Admin\Api\ComplaintConsumerController::class,'patchComplaint'])->name('api.complaint.update.status');

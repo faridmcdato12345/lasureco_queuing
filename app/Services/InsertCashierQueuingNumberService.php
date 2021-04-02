@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 
+use Carbon\Carbon;
 use App\Models\CashierConsumer;
 
 class InsertCashierQueuingNumberService{
@@ -11,7 +12,7 @@ class InsertCashierQueuingNumberService{
         if(!$lastNumber){
             $this->insert($number);
         }
-        elseif ($lastNumber->created_at != date('Y-m-d')) {
+        elseif (Carbon::createFromFormat('Y-m-d H:i:s',$lastNumber->created_at)->format('Y-m-d') != date('Y-m-d')) {
             $this->insert($number);
         }
         else{

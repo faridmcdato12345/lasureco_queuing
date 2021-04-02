@@ -8,7 +8,7 @@ import Vue from 'vue'
 // });
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('cashier-component', require('./components/CashierComponent.vue').default);
-Vue.component('cashier-component-controller', require('./components/CashierComponentController.vue').default);
+Vue.component('complaint-component', require('./components/ComplaintComponent.vue').default);
 const app = new Vue({
     el: '#app',
 });

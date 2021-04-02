@@ -48,7 +48,7 @@
                 <h1 style="text-align: center;font-size:3.25rem;"><strong>SAAN PO KAYO PUPUNTA?</strong></h1>
                 <br>
                 <button class="btn btn-primary btn-lg btn-block cashier">CASHIER</button>
-                <a href="{{route('complaint.consumer.store')}}" class="btn btn-success btn-lg btn-block">COMPLAINT DESK</a>
+                <button class="btn btn-success btn-lg btn-block complaint">COMPLAINT DESK</button>
               </div>
             </div>
         </div>
@@ -75,6 +75,19 @@
         $('.cashier').on('click',function(){
             $.ajax({
                 url: "{{route('api.cashier')}}",
+                type: "post",
+                dataType: "json",
+                success: function(data){
+                    const number = "CA-" + data;
+                },
+                error: function(e){
+                    $('#error_modal').modal('show')
+                }
+            });
+        })
+        $('.complaint').on('click',function(){
+            $.ajax({
+                url: "{{route('api.complaint')}}",
                 type: "post",
                 dataType: "json",
                 success: function(data){

@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 
+use Carbon\Carbon;
 use App\Models\CashierConsumer;
 use App\Models\ComplaintConsumer;
 
@@ -12,7 +13,7 @@ class InsertComplaintQueuingNumberService{
         if(!$lastNumber){
             $this->insert($number);
         }
-        elseif ($lastNumber->created_at != date('Y-m-d')) {
+        elseif (Carbon::createFromFormat('Y-m-d H:i:s',$lastNumber->created_at)->format('Y-m-d') != date('Y-m-d')) {
             $this->insert($number);
         }
         else{
@@ -23,7 +24,7 @@ class InsertComplaintQueuingNumberService{
         return str_pad($number,4,'0',STR_PAD_LEFT);
     }
     private function insert($number){
-        $complaintNumber = new ComplaintConsumer();
+        $complaintNumber = new ComplaintConsumer;
         $number = str_pad($number,4,'0',STR_PAD_LEFT);
         $complaintNumber->number = $number;
         $complaintNumber->save();

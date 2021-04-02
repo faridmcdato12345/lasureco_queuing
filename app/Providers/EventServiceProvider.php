@@ -21,6 +21,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\CashierQueChanged' => [
             'App\Listeners\CashierQueChangedListener',
         ],
+        'App\Events\ComplaintQueChanged' => [
+            'App\Listeners\ComplaintQueChangedListener',
+        ],
     ];
 
     /**

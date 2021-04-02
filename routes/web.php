@@ -1,13 +1,14 @@
 <?php
 
 use App\Events\CashierQueChanged;
-use App\Http\Controllers\HomeController;
+use App\Events\ComplaintQueChanged;
 use Illuminate\Support\Facades\Auth;
-use \App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use \App\Http\Controllers\Admin\UserController;
 
 Route::get('/fire',function(){
-    event(new CashierQueChanged);
+    event(new ComplaintQueChanged);
     return 'fire';
 });
 

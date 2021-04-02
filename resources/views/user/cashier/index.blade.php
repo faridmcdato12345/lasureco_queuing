@@ -70,7 +70,7 @@
           <h1 style="font-size:3.5rem"><strong></strong></h1>
         </div>
         <div class="card-footer">
-          <button type="button" class="btn btn-primary btn-lg form-control next-button" id="nxt-button">NEXT</button>
+          <button type="button" class="btn btn-primary btn-lg form-control" id="nxt-button">NEXT</button>
         </div>
       </div>
     </div>
@@ -88,6 +88,13 @@
       }
     });
     getQueuingNumber()
+    $("body").on('click','.start-button',function(){
+      getQueuingNumber()
+    })
+    $("body").on('click','.next-button',function(){
+      updateStatusOfCashierConsumer()
+      console.log("wtf")
+    })
   });
   var getQueuingNumber = function(){
     $.ajax({
@@ -96,22 +103,35 @@
       dataType: "json",
       success: function(data){
         $('#nxt-button').addClass('next-button').removeClass('start-button')
-        $('.card-body h1 strong').html('CA-' + data.number)
+        $('.card-body').html('<h1><strong>CA-'+data.number+'</strong></h1>')
+        $('.card-body').append('<input type="hidden" value='+data.id+' class="cashier_id">')
         $('.next-button').html('NEXT')
-        console.log(data.number)
+        if(data.number == undefined){
+          $('.card-body').html('<h2><strong>No Registered Number</strong></h2>')
+          $('#nxt-button').addClass('start-button').removeClass('next-button')
+          $('.start-button').html('START')
+        }
       },
-      error: function(e){
-        console.log(e)
+      error: function(error){
         $('.card-body').html('<h2><strong>No Registered Number</strong></h2>')
         $('#nxt-button').addClass('start-button').removeClass('next-button')
         $('.start-button').html('START')
       }
     })
   }
-  $('.start-button').on('click',function(){
-    // getQueuingNumber()
-    console.log("wtf")
-  })
+  var updateStatusOfCashierConsumer = function(){
+    let cashier_id = $('.cashier_id').val();
+    let url = "{{route('api.cashier.update.status',':id')}}"
+    var urlUpdate = url.replace(':id',cashier_id)
+    $.ajax({
+      url: urlUpdate,
+      type: "get",
+      dataType: "json",
+      success: function(data){
+        getQueuingNumber()
+      }
+    });
+  }
 </script>
 </body>
 </html>

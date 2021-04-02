@@ -17,6 +17,7 @@ class CashierConsumerResource extends JsonResource
         return [
             'id' => $this->id,
             'number' => $this->number,
+            'status' => $this->status,
         ];
     }
 }
