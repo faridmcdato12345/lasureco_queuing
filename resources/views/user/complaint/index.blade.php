@@ -84,6 +84,7 @@
 </body>
 <script src="{{asset('js/app.js')}}"></script>
 <script>
+  var y;
   $(document).ready(function(){
     $.ajaxSetup({
       headers: {
@@ -93,25 +94,33 @@
     getQueuingNumber()
     $("body").on('click','.start-button',function(){
       getQueuingNumber()
+      storeComplaintView(y)
     })
     $("body").on('click','.next-button',function(){
       updateStatusOfComplaintConsumer()
+      let b = $('.complaint_id').val();
+      let a = parseInt(b) + 1;
+      checkComplaintId(a)
     })
   });
   var getQueuingNumber = function(){
     $.ajax({
+      async: false,
       url: "{{route('api.complaint.get.one')}}",
       type: "get",
       dataType: "json",
       success: function(data){
-        $('#nxt-button').addClass('next-button').removeClass('start-button')
-        $('.card-body').html('<h1><strong>C0-'+data.number+'</strong></h1>')
-        $('.card-body').append('<input type="hidden" value='+data.id+' class="complaint_id">')
-        $('.next-button').html('NEXT')
         if(data.number == undefined){
           $('.card-body').html('<h2><strong>No Registered Number</strong></h2>')
           $('#nxt-button').addClass('start-button').removeClass('next-button')
           $('.start-button').html('START')
+        }else{
+          $('#nxt-button').addClass('next-button').removeClass('start-button')
+          $('.card-body').html('<h1><strong>C0-'+data.number+'</strong></h1>')
+          $('.card-body').append('<input type="hidden" value='+data.number+' class="complaint_number">')
+          $('.card-body').append('<input type="hidden" value='+data.id+' class="complaint_id">')
+          $('.next-button').html('NEXT')
+          y = data.number
         }
       },
       error: function(error){
@@ -133,6 +142,34 @@
         getQueuingNumber()
       }
     });
+  }
+  var checkComplaintId = function(id){
+    $.ajax({
+      url: "{{route('api.complaint.check.id')}}",
+      data: { complaint_id: id},
+      type: "post",
+      dataType: "json",
+      success: function(data){
+        storeComplaintView(data.number)
+      },
+      error: function(error){
+        console.log(error)
+      }
+    })
+  }
+  var storeComplaintView = function(number){
+    $.ajax({
+      url: "{{route('api.complaint.view.store')}}",
+      data: { complaint_number : number},
+      type: "post",
+      dataType: "json",
+      succes: function(data){
+        console.log("success:" + data)
+      },
+      error: function(error){
+        console.log(error)
+      }
+    })
   }
 </script>
 </html>

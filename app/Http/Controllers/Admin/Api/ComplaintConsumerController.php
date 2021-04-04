@@ -8,6 +8,7 @@ use App\Events\ComplaintQueChanged;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ComplaintConsumerResource;
 use App\Services\InsertComplaintQueuingNumberService;
+use Carbon\Carbon;
 
 class ComplaintConsumerController extends Controller
 {
@@ -22,7 +23,7 @@ class ComplaintConsumerController extends Controller
         return ComplaintConsumerResource::collection(ComplaintConsumer::select('id','number','status')->where('status',0)->get());
     }
     public function getComplaintQueOne(){
-        $que = ComplaintConsumer::select('id','number')->where('status',0)->first();
+        $que = ComplaintConsumer::where('status',0)->whereDate('created_at',Carbon::today())->first();
         return response()->json($que,200);
     }
     public function patchComplaint($id){
@@ -31,5 +32,12 @@ class ComplaintConsumerController extends Controller
         $number->save();
         event(new ComplaintQueChanged);
         return response()->json($number,200);
+    }
+    public function patchComplaintonGoing($id){
+        $number = ComplaintConsumer::findOrFail($id);
+        $number->on_going = 1;
+        $number->save();
+        event(new ComplaintQueChanged);
+        return response()->json($number,200); 
     }
 }

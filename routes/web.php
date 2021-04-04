@@ -1,11 +1,13 @@
 <?php
 
+use App\Models\Video;
 use App\Events\CashierQueChanged;
 use App\Events\ComplaintQueChanged;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use \App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\VideoController;
 
 Route::get('/fire',function(){
     event(new ComplaintQueChanged);
@@ -30,6 +32,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('admin/consumers',[\App\Http\Controllers\Admin\ConsumerController::class,'index'])->name('admin.consumers.index');
         Route::get('admin/dashboard',function(){return view('admin.dashboard');})->name('dashboard');
         Route::get('admin/user/profile',function(){return view('admin.users.profile');})->name('user.profile');
+        Route::resource('admin/video', VideoController::class)->except('show','edit','update');
     });
     //route for auth middleware only
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -38,3 +41,8 @@ Route::get('/consumer',function(){return view('consumers.index');})->name('consu
 Route::get('/consumer/togo',function(){return view('consumers.process');});
 Route::post('/consumer',[App\Http\Controllers\Admin\ConsumerController::class,'store'])->name('consumer.store');
 Route::get('/post/consumer/complaint',[App\Http\Controllers\Consumer\ComplaintConsumerController::class,'store'])->name('complaint.consumer.store');
+//route for viewing
+Route::get('/viewing',function(){
+    $videos = Video::all();
+    return view('viewing.index',compact('videos'));
+});

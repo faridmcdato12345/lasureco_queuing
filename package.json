@@ -27,6 +27,7 @@
         "admin-lte": "^3.0.5",
         "datatables.net-buttons": "^1.7.0",
         "datatables.net-dt": "^1.10.24",
+        "howler": "^2.2.1",
         "laravel-echo": "^1.10.0",
         "pusher-js": "^7.0.3",
         "vue": "^2.6.12"

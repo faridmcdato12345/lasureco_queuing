@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\CashierConsumerResource;
 use App\Services\InsertCashierQueuingNumberService;
 use DB;
+use Carbon\Carbon;
 
 class CashierConsumerController extends Controller
 {
@@ -19,10 +20,10 @@ class CashierConsumerController extends Controller
         return response()->json($number,200);
     }
     public function getCashierQue(){
-        return CashierConsumerResource::collection(CashierConsumer::select('id','number','status')->where('status',0)->get());
+        return CashierConsumerResource::collection(CashierConsumer::select('id','number','status')->where('status',0)->whereDate('created_at',Carbon::today())->get());
     }
     public function getCashierQueOne(){
-        $que = CashierConsumer::select('id','number')->where('status',0)->first();
+        $que = CashierConsumer::where('status',0)->whereDate('created_at',Carbon::today())->first();
         return response()->json($que,200);
     }
     public function patchCashier($id){

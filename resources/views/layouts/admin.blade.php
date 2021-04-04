@@ -72,7 +72,14 @@
               </p>
             </a>
           </li>
-          
+          <li class="nav-item dashboard">
+            <a href="{{route('video.index')}}" class="nav-link">
+              <i class="nav-icon fa fa-tachometer-alt"></i>
+              <p>
+                Videos
+              </p>
+            </a>
+          </li>
         </ul>
       </nav>
       </div>

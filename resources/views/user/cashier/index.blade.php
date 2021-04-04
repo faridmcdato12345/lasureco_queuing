@@ -8,7 +8,7 @@
   <title>QUEUING</title>
   <link href="{{ asset('css/app.css') }}" rel="stylesheet">
   <style>
-     .outerDiv{
+    .outerDiv{
         height: 500px;
         position:relative;
     }
@@ -64,7 +64,7 @@
     <div class="container outerDiv">
       <div class="card justify-content-center text-center innerDiv">
         <div class="card-header">
-          <h1><strong>QUEUING NUMBER</strong></h1>
+          <h1><strong>RECEIVED NUMBER</strong></h1>
         </div>
         <div class="card-body" style="color:red">
           <h1 style="font-size:3.5rem"><strong></strong></h1>
@@ -81,6 +81,7 @@
 </div>
 <script src="{{asset('js/app.js')}}"></script>
 <script>
+  var y;
   $(document).ready(function(){
     $.ajaxSetup({
       headers: {
@@ -90,33 +91,38 @@
     getQueuingNumber()
     $("body").on('click','.start-button',function(){
       getQueuingNumber()
+      storeCashierView(y)
     })
     $("body").on('click','.next-button',function(){
       updateStatusOfCashierConsumer()
-      console.log("wtf")
+      let b = $('.cashier_id').val();
+      let a = parseInt(b) + 1;
+      console.log(a)
+      checkCashierId(a)
     })
   });
   var getQueuingNumber = function(){
     $.ajax({
+      async: false,
       url: "{{route('api.cashier.get.one')}}",
       type: "get",
       dataType: "json",
       success: function(data){
-        $('#nxt-button').addClass('next-button').removeClass('start-button')
-        $('.card-body').html('<h1><strong>CA-'+data.number+'</strong></h1>')
-        $('.card-body').append('<input type="hidden" value='+data.id+' class="cashier_id">')
-        $('.next-button').html('NEXT')
         if(data.number == undefined){
           $('.card-body').html('<h2><strong>No Registered Number</strong></h2>')
           $('#nxt-button').addClass('start-button').removeClass('next-button')
           $('.start-button').html('START')
         }
-      },
-      error: function(error){
-        $('.card-body').html('<h2><strong>No Registered Number</strong></h2>')
-        $('#nxt-button').addClass('start-button').removeClass('next-button')
-        $('.start-button').html('START')
+        else{
+          $('#nxt-button').addClass('next-button').removeClass('start-button')
+          $('.card-body').html('<h1><strong>CA-'+data.number+'</strong></h1>')
+          $('.card-body').append('<input type="hidden" value='+data.number+' class="cashier_number">')
+          $('.card-body').append('<input type="hidden" value='+data.id+' class="cashier_id">')
+          $('.next-button').html('NEXT')
+          y = data.number
+        }
       }
+      
     })
   }
   var updateStatusOfCashierConsumer = function(){
@@ -127,11 +133,40 @@
       url: urlUpdate,
       type: "get",
       dataType: "json",
-      success: function(data){
+      success: function(data){ //the cashier_id = 0057 status is updated to 1
         getQueuingNumber()
       }
     });
   }
+  var storeCashierView = function(number){
+    $.ajax({
+      url: "{{route('api.cashier.view.store')}}",
+      data: { cashier_number : number},
+      type: "post",
+      dataType: "json",
+      succes: function(data){
+        console.log("success:" + data)
+      },
+      error: function(error){
+        console.log(error)
+      }
+    })
+  }
+  var checkCashierId = function(id){
+    $.ajax({
+      url: "{{route('api.cashier.check.id')}}",
+      data: { cashier_id: id},
+      type: "post",
+      dataType: "json",
+      success: function(data){
+        storeCashierView(data.number)
+      },
+      error: function(error){
+        console.log(error)
+      }
+    })
+  }
+  
 </script>
 </body>
 </html>
